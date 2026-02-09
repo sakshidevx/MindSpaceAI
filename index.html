@@ -42,7 +42,7 @@
             position: absolute;
             filter: blur(90px);
             z-index: 0;
-            opacity: 0.2;
+            opacity: 0.15;
         }
         
         /* Glassmorphism Card Style */
@@ -171,43 +171,77 @@
             border-color: rgba(0, 0, 0, 0.1);
         }
 
-        /* NEW: Fullscreen Hero Background Image */
-        .hero-background {
+        /* HERO SECTION WITH BLENDED IMAGE */
+        .hero-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 55%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-image-container::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, 
+                rgba(3, 7, 18, 1) 0%,
+                rgba(3, 7, 18, 0.95) 10%,
+                rgba(3, 7, 18, 0.7) 30%,
+                rgba(3, 7, 18, 0.3) 60%,
+                transparent 100%
+            );
+            z-index: 2;
+        }
+
+        body.light-mode .hero-image-container::before {
+            background: linear-gradient(to right, 
+                rgba(253, 252, 251, 1) 0%,
+                rgba(253, 252, 251, 0.98) 10%,
+                rgba(253, 252, 251, 0.85) 30%,
+                rgba(253, 252, 251, 0.5) 60%,
+                rgba(253, 252, 251, 0.2) 100%
+            );
+        }
+
+        .hero-background-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 0;
-        }
-        
-        /* Dark mode overlay */
-        body.dark-mode .hero-background {
-            opacity: 0.25;
-        }
-        
-        /* Light mode overlay */
-        body.light-mode .hero-background {
-            opacity: 0.15;
-        }
-
-        /* Gradient overlay for better text readability */
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            object-position: center;
             z-index: 1;
         }
-        
-        body.dark-mode .hero-overlay {
-            background: linear-gradient(135deg, rgba(3, 7, 18, 0.85) 0%, rgba(3, 7, 18, 0.6) 100%);
-        }
-        
-        body.light-mode .hero-overlay {
-            background: linear-gradient(135deg, rgba(253, 252, 251, 0.92) 0%, rgba(253, 252, 251, 0.75) 100%);
+
+        /* Mobile: Full background with overlay */
+        @media (max-width: 1024px) {
+            .hero-image-container {
+                width: 100%;
+            }
+            
+            .hero-image-container::before {
+                background: linear-gradient(to bottom,
+                    rgba(3, 7, 18, 0.92) 0%,
+                    rgba(3, 7, 18, 0.85) 50%,
+                    rgba(3, 7, 18, 0.75) 100%
+                );
+            }
+            
+            body.light-mode .hero-image-container::before {
+                background: linear-gradient(to bottom,
+                    rgba(253, 252, 251, 0.95) 0%,
+                    rgba(253, 252, 251, 0.88) 50%,
+                    rgba(253, 252, 251, 0.8) 100%
+                );
+            }
         }
 
         /* Mobile Menu Toggle */
@@ -275,16 +309,15 @@
         </div>
     </nav>
 
-    <header class="relative pt-32 sm:pt-40 pb-16 sm:pb-20 lg:pt-52 lg:pb-32 px-4 sm:px-6 border-b border-white/5 overflow-hidden min-h-[600px] lg:min-h-[700px]">
-        <!-- Fullscreen Background Image -->
-        <img 
-            src="Mental_Health_Coach.jpeg" 
-            alt="Professional counseling therapy session" 
-            class="hero-background"
-        >
-        
-        <!-- Gradient Overlay -->
-        <div class="hero-overlay"></div>
+    <header class="hero-wrapper relative pt-32 sm:pt-40 pb-16 sm:pb-20 lg:pt-52 lg:pb-32 px-4 sm:px-6 border-b border-white/5 min-h-[600px] lg:min-h-[700px]">
+        <!-- Blended Background Image on Right -->
+        <div class="hero-image-container">
+            <img 
+                src="Mental_Health_Coach.jpeg" 
+                alt="Professional counseling therapy session" 
+                class="hero-background-img"
+            >
+        </div>
         
         <!-- Subtle Glow Blob -->
         <div class="glow-blob bg-violet-600 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full top-0 left-1/4 -translate-x-1/2 -translate-y-1/2"></div>
@@ -304,7 +337,7 @@
                     <span class="text-gradient">the Burnout.</span>
                 </h1>
                 
-                <p class="text-base sm:text-lg md:text-xl text-gray-300 mb-8 sm:mb-12 leading-relaxed backdrop-blur-sm bg-black/20 p-4 rounded-xl inline-block">
+                <p class="text-base sm:text-lg md:text-xl text-gray-300 mb-8 sm:mb-12 leading-relaxed max-w-xl">
                     An AI platform built to bridge the gap between peak productivity and deep recovery. 
                     <span class="text-white font-semibold">We debug humans, so you can keep building.</span>
                 </p>
@@ -365,7 +398,7 @@
         </div>
     </section>
 
-    <!-- WHO Statistics Section with Updated Links -->
+    <!-- WHO Statistics Section -->
     <section class="py-16 sm:py-24 bg-gray-900/50 border-y border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="text-center mb-12 sm:mb-16">
@@ -422,7 +455,7 @@
                     </div>
                 </div>
 
-                <!-- NEW: 81% Report Workplace Stress (2024) -->
+                <!-- 81% Report Workplace Stress -->
                 <div class="glass-card p-6 sm:p-8 rounded-3xl">
                     <div class="flex items-start gap-3 sm:gap-4 mb-4">
                         <div class="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 flex-shrink-0">
@@ -617,7 +650,7 @@
         <p>&copy; 2026 MindSpace AI. Built for the "Debugging Humans" Hackathon.</p>
     </footer>
 
-    <!-- Modals -->
+    <!-- Modals (continues...)-->
     <div id="modal-digital" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
@@ -651,7 +684,7 @@
                 <div class="bg-violet-500/10 p-4 rounded-xl border border-violet-500/20">
                     <h4 class="text-base sm:text-lg font-bold mb-2">The Science:</h4>
                     <p class="text-xs sm:text-sm text-gray-400">
-                        Research from UC Irvine shows that constant connectivity depletes mental energy by up to 40%. Gloria Mark's studies reveal it takes an average of 23 minutes to refocus after an interruption. Intentional boundaries improve focus, reduce anxiety, and restore cognitive bandwidth.
+                        Research from UC Irvine shows that constant connectivity depletes mental energy by up to 40%. Gloria Mark's studies reveal it takes an average of 23 minutes to refocus after an interruption.
                     </p>
                 </div>
             </div>
@@ -695,7 +728,7 @@
                 <div class="bg-violet-500/10 p-4 rounded-xl border border-violet-500/20">
                     <h4 class="text-base sm:text-lg font-bold mb-2">The Science:</h4>
                     <p class="text-xs sm:text-sm text-gray-400">
-                        Box breathing stimulates the Parasympathetic Nervous System, triggering your body's natural relaxation response. Used by Navy SEALs and elite athletes, this technique reduces cortisol levels, lowers heart rate, and regains mental clarity in under 60 seconds. Perfect for high-pressure moments.
+                        Box breathing stimulates the Parasympathetic Nervous System, triggering your body's natural relaxation response. Used by Navy SEALs and elite athletes.
                     </p>
                 </div>
             </div>
@@ -716,11 +749,11 @@
                     <ul class="space-y-2 text-gray-400 text-sm sm:text-base">
                         <li class="flex items-start gap-2">
                             <i class="ph ph-check-circle text-amber-400 mt-1 flex-shrink-0"></i>
-                            <span>Document one professional win each day (no matter how small)</span>
+                            <span>Document one professional win each day</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="ph ph-check-circle text-amber-400 mt-1 flex-shrink-0"></i>
-                            <span>Write down what you learned from challenges or setbacks</span>
+                            <span>Write down what you learned from challenges</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="ph ph-check-circle text-amber-400 mt-1 flex-shrink-0"></i>
@@ -728,14 +761,14 @@
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="ph ph-check-circle text-amber-400 mt-1 flex-shrink-0"></i>
-                            <span>Review your wins weekly to track growth patterns and progress</span>
+                            <span>Review your wins weekly to track growth</span>
                         </li>
                     </ul>
                 </div>
                 <div class="bg-violet-500/10 p-4 rounded-xl border border-violet-500/20">
                     <h4 class="text-base sm:text-lg font-bold mb-2">The Science:</h4>
                     <p class="text-xs sm:text-sm text-gray-400">
-                        Research from UC Berkeley and UC Davis shows daily gratitude practice increases resilience by 23% and reduces imposter syndrome. It rewires your brain to notice progress over perfection, creating a positive feedback loop that builds lasting confidence and combats negativity bias.
+                        Research shows daily gratitude practice increases resilience by 23% and reduces imposter syndrome by creating a positive feedback loop.
                     </p>
                 </div>
             </div>
@@ -818,3 +851,4 @@
 
 </body>
 </html>
+
